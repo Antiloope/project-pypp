@@ -21,7 +21,10 @@ void JackClient::setup(EffectsList* effectsList) {
 
     string jackClientName = jack_get_client_name(_jackClient);
 
-    auto* jackCallbackParams = new JackCallbackParams{stereoOutputPorts, stereoInputPorts, effectsList};
+    auto* jackCallbackParams = new JackCallbackParams{stereoOutputPorts,
+                                                      stereoInputPorts,
+                                                      effectsList,
+                                                      clientCallbackQueue};
     // Set client callbacks
     jack_set_process_callback(_jackClient, processCallback, jackCallbackParams);
 
@@ -122,10 +125,12 @@ void JackClient::createClient() {
         Log::write( "Unique name asigned. ", Log::info_t );
 }
 
-JackClient::JackClient() {
-
-}
+JackClient::JackClient() = default;
 
 JackClient::~JackClient() {
     delete _jackClient;
+}
+
+void JackClient::clientCallbackQueue(jack_default_audio_sample_t **values) {
+    AudioMessageQueue::getInstance()->push((float**)values);
 }

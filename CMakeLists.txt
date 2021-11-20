@@ -22,7 +22,7 @@ add_executable(project-pypp ${SourcesList}
         src/back/player/jack_client.cpp
         src/back/player/jack_client.h
         src/back/player/player.cpp
-        src/back/player/player.h src/back/player/effects_list.cpp src/back/player/effects_list.h src/back/player/jack_callbacks.h src/back/utils/exception/log_exception.cpp src/back/utils/exception/log_exception.h)
+        src/back/player/player.h src/back/player/effects_list.cpp src/back/player/effects_list.h src/back/player/jack_callbacks.h src/back/utils/exception/log_exception.cpp src/back/utils/exception/log_exception.h src/back/connector/audio_message_queue.cpp src/back/connector/audio_message_queue.h)
 
 # configure version header file
 configure_file(

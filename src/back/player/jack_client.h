@@ -17,9 +17,10 @@ public:
     long getSampleRate() const;
 private:
     void createClient();
+    static void clientCallbackQueue(jack_default_audio_sample_t *[2]);
 
-    long _sampleRate;
-    jack_client_t* _jackClient;
+    long _sampleRate{};
+    jack_client_t* _jackClient{};
 };
 
 }

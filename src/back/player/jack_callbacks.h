@@ -13,6 +13,7 @@ struct JackCallbackParams {
     jack_port_t** jackOutputPorts;
     jack_port_t** jackInputPorts;
     EffectsList* effectsList;
+    void (*clientCallback)(jack_default_audio_sample_t*[2]);
 };
 
 enum Channel {
@@ -55,6 +56,22 @@ int processCallback(jack_nframes_t nframes, void* params) {
             out[Channel::Left],
             in[Channel::Left],
             sizeof (jack_default_audio_sample_t) * nframes );
+
+    jack_default_audio_sample_t *callbackBuffer[2];
+    callbackBuffer[0] = new jack_default_audio_sample_t[nframes];
+    callbackBuffer[1] = new jack_default_audio_sample_t[nframes];
+
+    memcpy(
+            callbackBuffer[Channel::Right],
+            out[Channel::Right],
+            sizeof (jack_default_audio_sample_t) * nframes );
+
+    memcpy(
+            callbackBuffer[Channel::Left],
+            out[Channel::Left],
+            sizeof (jack_default_audio_sample_t) * nframes );
+
+    jackCallbackParams->clientCallback(callbackBuffer);
 
     return 0;
 }
